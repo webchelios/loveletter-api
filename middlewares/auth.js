@@ -1,7 +1,7 @@
 import "dotenv/config";
 import jwt from "jsonwebtoken";
 
-const verificarToken = (req, res, next) => {
+const verifyToken = (req, res, next) => {
 	const token = req.get("token");
 	jwt.verify(token, process.env.SEED, (error, decoded) => {
 		if (error) {
@@ -15,4 +15,4 @@ const verificarToken = (req, res, next) => {
 	});
 };
 
-export { verificarToken };
+export { verifyToken };

@@ -8,7 +8,7 @@ import {
 	deactivateMovie,
 	updateMovie,
 } from "../controllers/movies_controller.js";
-import { verificarToken } from "../middlewares/auth.js";
+import { verifyToken } from "../middlewares/auth.js";
 
 const moviesroutes = express.Router();
 
@@ -20,7 +20,7 @@ moviesroutes.get("/movie/:id", getMovieById);
 moviesroutes.put("/movie/:id", updateMovie);
 moviesroutes.delete(
 	"/:id",
-	// verificarToken,
+	// verifyToken,
 	(req, res) => {
 		const body = req.body;
 		const result = deactivateMovie(req.params.id, body);

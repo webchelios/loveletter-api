@@ -7,12 +7,12 @@ import {
 	updateUser,
 	getUserById,
 } from "../controllers/users_controller.js";
-import { verificarToken } from "../middlewares/auth.js";
+import { verifyToken } from "../middlewares/auth.js";
 const userRoutes = express.Router();
 
 userRoutes.get(
 	"/",
-	//verificarToken,
+	//verifyToken,
 	getUsers,
 );
 userRoutes.get("/find/:userId", getUser);

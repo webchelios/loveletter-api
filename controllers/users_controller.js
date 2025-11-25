@@ -7,10 +7,8 @@ const getUsers = async (req, res) => {
 	try {
 		const usuarios = await Users.find();
 		res.json(usuarios);
-	} catch (error) {
-		res.status(400).json({
-			error,
-		});
+	} catch (err) {
+		res.status(400).json({ message: `Error al obtener todos los usuarios: ${err.message}` });
 	}
 };
 
@@ -18,10 +16,8 @@ const getUser = async (req, res) => {
 	try {
 		const usuario = await Users.find({ _id: req.params.userId });
 		res.json(usuario);
-	} catch (error) {
-		res.status(400).json({
-			error,
-		});
+	} catch (err) {
+		res.status(400).json({ message: `Error al obtener un usuario: ${err}` });
 	}
 };
 
@@ -40,10 +36,8 @@ const registerUser = async (req, res) => {
 		res.json({
 			user: savedUser,
 		});
-	} catch (error) {
-		res.status(400).json({
-			message: error.message,
-		});
+	} catch (err) {
+		res.status(400).json({ message: `Error al registrar usuario: ${err.message}` });
 	}
 };
 
@@ -90,7 +84,7 @@ const loginUser = async (req, res) => {
 		.catch((err) => {
 			res.status(400).json({
 				error: "ok",
-				msj: `Error en el servicio${err}`,
+				msj: `Error en el servicio ${err}`,
 			});
 		});
 };
@@ -100,7 +94,7 @@ const getUserById = async (req, res) => {
 	try {
 		const user = await Users.findById(id);
 		if (!user) {
-			return res.status(404).json({ message: "User not found" });
+			return res.status(404).json({ message: `Usuario con el id ${id} no encontrado` });
 		}
 		res.json(user);
 	} catch (err) {
@@ -109,29 +103,27 @@ const getUserById = async (req, res) => {
 };
 
 const updateUser = async (req, res) => {
-	const { id } = req.params; // Obtener el ID de la película de los parámetros de la solicitud
-	const { name, username } = req.body; // Obtener los nuevos datos de la película del cuerpo de la solicitud
+	const { id } = req.params;
+	if (!id) {
+		return res.status(400).json({ message: "El 'id' es requerido" });
+	}
+	const { name, username } = req.body;
 
 	try {
-		// Verificar si la película existe
+
 		const user = await Users.findById(id);
 		if (!user) {
 			return res.status(404).json({ message: "Usuario no encontrado" });
 		}
 
-		// Actualizar los campos de la película
 		user.name = name;
 		user.username = username;
 
-		// Guardar los cambios en la base de datos
 		await user.save();
 
-		// Responder con la película actualizada
 		res.status(200).json(user);
-	} catch (error) {
-		// Manejar errores de servidor
-		console.error(error);
-		res.status(500).json({ message: "Error al actualizar la película" });
+	} catch (err) {
+		res.status(500).json({ message: `Error al actualizar la película ${err.message}` });
 	}
 };
 

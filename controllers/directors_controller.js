@@ -5,12 +5,11 @@ export const getAllDirectors = async (req, res) => {
 		const directors = await Directors.find();
 		res.json(directors);
 	} catch (err) {
-		res.status(500).json({ message: err.message });
+		res.status(500).json({ message: `Error al obtener los directores: ${err.message}` });
 	}
 };
 
 export const createDirector = async (req, res) => {
-	console.log(req.body);
 	const director = new Directors({
 		surname: req.body.surname,
 		age: req.body.age,
@@ -20,12 +19,16 @@ export const createDirector = async (req, res) => {
 		const newDirector = await director.save();
 		res.status(201).json(newDirector);
 	} catch (err) {
-		res.status(400).json({ message: err.message });
+		res.status(400).json({ message: `Error al crear un director: ${err.message}` });
 	}
 };
 
 export const searchDirectors = async (req, res) => {
 	const { surname } = req.query;
+	if (!surname) {
+		return res.status(400).json({ message: "El 'surname' es requerido" });
+	}
+
 	try {
 		const directors = await Directors.find({
 			surname: { $regex: surname, $options: "i" },
@@ -33,15 +36,16 @@ export const searchDirectors = async (req, res) => {
 		});
 		res.json(directors);
 	} catch (err) {
-		console.error(err);
-		res
-			.status(500)
-			.json({ message: "Error al buscar directores por apellido" });
+		res.status(500).json({ message: `Error al buscar directores: ${err.message}` });
 	}
 };
 
 export const getDirectorById = async (req, res) => {
 	const { id } = req.params;
+	if (!id) {
+		return res.status(400).json({ message: "El 'id' es requerido" });
+	}
+
 	try {
 		const director = await Directors.findById(id);
 		if (!director) {
@@ -49,25 +53,32 @@ export const getDirectorById = async (req, res) => {
 		}
 		res.json(director);
 	} catch (err) {
-		res.status(500).json({ message: err.message });
+		res.status(500).json({ message: `Error al obtener un director por su ID: ${err.message}` });
 	}
 };
 
 export async function deactivateDirector(id) {
-	const deactivatedDirector = await Directors.findByIdAndUpdate(
-		id,
-		{
-			$set: {
-				status: false,
+	try {
+		const deactivatedDirector = await Directors.findByIdAndUpdate(
+			id,
+			{
+				$set: {
+					status: false,
+				},
 			},
-		},
-		{ new: true },
-	);
-	return deactivatedDirector;
+			{ new: true },
+		);
+		return deactivatedDirector;
+	} catch (err) {
+		return false
+	}
 }
 
 export const updateDirector = async (req, res) => {
 	const { id } = req.params;
+	if (!id) {
+		return res.status(400).json({ message: "El 'id' es requerido" });
+	}
 	const { surname, age } = req.body;
 
 	try {
@@ -78,11 +89,11 @@ export const updateDirector = async (req, res) => {
 		);
 
 		if (!updatedDirector) {
-			return res.status(404).json({ message: "Director not found" });
+			return res.status(404).json({ message: "Director no encontrado" });
 		}
 
 		res.status(200).json(updatedDirector);
-	} catch (error) {
-		res.status(500).json({ message: error.message });
+	} catch (err) {
+		res.status(500).json({ message: `Error al actualizar un director: ${err.message}` });
 	}
 };

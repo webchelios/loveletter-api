@@ -7,7 +7,7 @@ import {
 	deactivateDirector,
 	updateDirector,
 } from "../controllers/directors_controller.js";
-import { verificarToken } from "../middlewares/auth.js";
+import { verifyToken } from "../middlewares/auth.js";
 
 const directorsroutes = express.Router();
 
@@ -16,7 +16,7 @@ directorsroutes.get("/:id", getDirectorById);
 directorsroutes.post("/", createDirector);
 directorsroutes.get("/search", searchDirectors);
 directorsroutes.put("/:id", updateDirector);
-directorsroutes.delete("/:id", verificarToken, (req, res) => {
+directorsroutes.delete("/:id", verifyToken, (req, res) => {
 	const body = req.body;
 	const result = deactivateDirector(req.params.id, body);
 	result

@@ -10,9 +10,9 @@ mongoose
 		useUnifiedTopology: true,
 	})
 	.then(() => {
-		console.log("Conectado a MongoDB...");
+		console.log("Conectado a MongoDB");
 	})
-	.catch((err) => console.log("No se pudo conectar con MongoDB..", err));
+	.catch((err) => console.log("No se pudo conectar con MongoDB: ", err));
 
 const app = express();
 
@@ -22,11 +22,13 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.get("/", (req, res) => {
-	res.send("Movies database");
+	res.send("Loveletter: Movies database");
 });
 app.use("/users", userRoutes);
 app.use("/directors", directorsroutes);
 app.use("/movies", moviesroutes);
 
 const port = process.env.PORT || 3002;
-app.listen(port, () => {});
+app.listen(port, () => {
+	console.log(`Servidor corriendo en puerto ${port}`)
+});

@@ -64,7 +64,7 @@ export const getMovieById = async (req, res) => {
 	}
 };
 
-export async function deactivateMovie(id) {
+export const deactivateMovie = async (id) => {
 	try {
 		const deactivatedMovie = await Movies.findByIdAndUpdate(
 			id,
@@ -77,7 +77,7 @@ export async function deactivateMovie(id) {
 		);
 		return deactivatedMovie;
 	} catch (err) {
-		return false
+		throw new Error(err)
 	}
 }
 
@@ -94,9 +94,9 @@ export const updateMovie = async (req, res) => {
 			return res.status(404).json({ message: "Película no encontrada" });
 		}
 
-		movie.title = title;
-		movie.synopsis = synopsis;
-		movie.year = year;
+		movie.title = title || movie.title;
+		movie.synopsis = synopsis || movie.synopsis;
+		movie.year = year || movie.year;
 
 		await movie.save();
 

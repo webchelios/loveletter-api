@@ -15,10 +15,25 @@ userRoutes.get(
 	//verifyToken,
 	getUsers,
 );
-userRoutes.get("/find/:userId", getUser);
+
+userRoutes.get("/user/:id", getUserById);
 userRoutes.post("/register", registerUser);
 userRoutes.post("/login", loginUser);
-userRoutes.get("/user/:id", getUserById);
 userRoutes.put("/user/:id", updateUser);
+userRoutes.delete(
+	"/:id",
+	// verifyToken,
+	(req, res) => {
+		const body = req.body;
+		const result = deactivateUser(req.params.id, body);
+		result
+			.then((user) => {
+				res.status(201).json(user);
+			})
+			.catch((error) => {
+				res.status(400).json(error);
+			});
+	},
+);
 
 export { userRoutes };

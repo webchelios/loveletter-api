@@ -1,26 +1,26 @@
-import mongoose  from "mongoose";
+import mongoose from "mongoose";
 
 const MoviesSchema = new mongoose.Schema({
   title: {
     type: String,
-    required: true
+    required: true,
   },
   synopsis: {
     type: String,
-    required: true
+    required: true,
   },
   year: {
     type: Number,
-    required: true
+    required: true,
   },
   director: {
     type: String,
-    required: true
+    required: true,
   },
   status: {
     type: Boolean,
     required: true,
-    default: true 
+    default: true,
   }
 });
 

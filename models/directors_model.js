@@ -1,18 +1,22 @@
 import mongoose from "mongoose";
 
 const DirectorsSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: false,
+  },
   surname: {
     type: String,
-    required: true
+    required: true,
   },
   age: {
     type: Number,
-    required: true
+    required: true,
   },
   status: {
     type: Boolean,
     required: true,
-    default: true 
+    default: true,
   }
 });
 

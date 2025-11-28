@@ -15,7 +15,7 @@ const moviesroutes = express.Router();
 moviesroutes.get("/", getAllMovies);
 moviesroutes.post("/", createMovie);
 moviesroutes.get("/search", searchMovies);
-moviesroutes.get("/:id", getMoviesByDirector);
+moviesroutes.get("/by-director", getMoviesByDirector);
 moviesroutes.get("/movie/:id", getMovieById);
 moviesroutes.put("/movie/:id", updateMovie);
 moviesroutes.delete(

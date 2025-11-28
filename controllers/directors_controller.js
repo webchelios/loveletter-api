@@ -11,6 +11,7 @@ export const getAllDirectors = async (req, res) => {
 
 export const createDirector = async (req, res) => {
 	const director = new Directors({
+		name: req.body.name,
 		surname: req.body.surname,
 		age: req.body.age,
 	});
@@ -23,7 +24,7 @@ export const createDirector = async (req, res) => {
 	}
 };
 
-export const searchDirectors = async (req, res) => {
+export const searchDirectorsBySurname = async (req, res) => {
 	const { surname } = req.query;
 	if (!surname) {
 		return res.status(400).json({ message: "El 'surname' es requerido" });
@@ -57,7 +58,7 @@ export const getDirectorById = async (req, res) => {
 	}
 };
 
-export async function deactivateDirector(id) {
+export const deactivateDirector = async (id) => {
 	try {
 		const deactivatedDirector = await Directors.findByIdAndUpdate(
 			id,
@@ -70,7 +71,7 @@ export async function deactivateDirector(id) {
 		);
 		return deactivatedDirector;
 	} catch (err) {
-		return false
+		throw new Error(err)
 	}
 }
 
@@ -82,17 +83,17 @@ export const updateDirector = async (req, res) => {
 	const { surname, age } = req.body;
 
 	try {
-		const updatedDirector = await Directors.findByIdAndUpdate(
-			id,
-			{ surname, age },
-			{ new: true },
-		);
-
-		if (!updatedDirector) {
-			return res.status(404).json({ message: "Director no encontrado" });
+		const director = await Directors.findById(id);
+		if (!director) {
+			return res.status(404).json({ message: "Película no encontrada" });
 		}
 
-		res.status(200).json(updatedDirector);
+		director.surname = surname || director.surname;
+		director.age = age || director.age;
+
+		await director.save();
+
+		res.status(200).json(director);
 	} catch (err) {
 		res.status(500).json({ message: `Error al actualizar un director: ${err.message}` });
 	}

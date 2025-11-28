@@ -12,14 +12,6 @@ const getUsers = async (req, res) => {
 	}
 };
 
-const getUser = async (req, res) => {
-	try {
-		const usuario = await Users.find({ _id: req.params.userId });
-		res.json(usuario);
-	} catch (err) {
-		res.status(400).json({ message: `Error al obtener un usuario: ${err}` });
-	}
-};
 
 const registerUser = async (req, res) => {
 	try {
@@ -107,7 +99,7 @@ const updateUser = async (req, res) => {
 	if (!id) {
 		return res.status(400).json({ message: "El 'id' es requerido" });
 	}
-	const { name, username } = req.body;
+	const { name, username, image } = req.body;
 
 	try {
 
@@ -116,8 +108,9 @@ const updateUser = async (req, res) => {
 			return res.status(404).json({ message: "Usuario no encontrado" });
 		}
 
-		user.name = name;
-		user.username = username;
+		user.name = name || user.name;
+		user.username = username || user.username;
+		user.image = image || user.image;
 
 		await user.save();
 
@@ -126,5 +119,22 @@ const updateUser = async (req, res) => {
 		res.status(500).json({ message: `Error al actualizar la película ${err.message}` });
 	}
 };
+
+export const deactivateUser = async () => {
+	try {
+		const deactivatedUser = await Users.findByIdAndUpdate(
+			id,
+			{
+				$set: {
+					status: false,
+				},
+			},
+			{ new: true },
+		);
+		return deactivatedUser;
+	} catch (err) {
+		throw new Error(err)
+	}
+}
 
 export { getUsers, getUser, registerUser, loginUser, getUserById, updateUser };

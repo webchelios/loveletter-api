@@ -12,12 +12,12 @@ import { verifyToken } from "../middlewares/auth.js";
 const directorsroutes = express.Router();
 
 directorsroutes.get("/", getAllDirectors);
+directorsroutes.get("/search", searchDirectorsBySurname);
 directorsroutes.get("/:id", getDirectorById);
 directorsroutes.post("/", createDirector);
-directorsroutes.get("/search", searchDirectorsBySurname);
 directorsroutes.put("/:id", updateDirector);
 directorsroutes.delete("/:id",
-	//verifyToken,
+	verifyToken,
 	(req, res) => {
 		const body = req.body;
 		const result = deactivateDirector(req.params.id, body);

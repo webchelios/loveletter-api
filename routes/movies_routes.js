@@ -20,7 +20,7 @@ moviesroutes.get("/:id", getMovieById);
 moviesroutes.put("/:id", updateMovie);
 moviesroutes.delete(
 	"/:id",
-	// verifyToken,
+	verifyToken,
 	(req, res) => {
 		const body = req.body;
 		const result = deactivateMovie(req.params.id, body);

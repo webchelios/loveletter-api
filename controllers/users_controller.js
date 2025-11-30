@@ -137,4 +137,4 @@ export const deactivateUser = async () => {
 	}
 }
 
-export { getUsers, getUser, registerUser, loginUser, getUserById, updateUser };
+export { getUsers, registerUser, loginUser, getUserById, updateUser };

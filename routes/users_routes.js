@@ -1,7 +1,6 @@
 import express from "express";
 import {
 	getUsers,
-	getUser,
 	registerUser,
 	loginUser,
 	updateUser,
@@ -16,10 +15,10 @@ userRoutes.get(
 	getUsers,
 );
 
-userRoutes.get("/user/:id", getUserById);
+userRoutes.get("/:id", getUserById);
 userRoutes.post("/register", registerUser);
 userRoutes.post("/login", loginUser);
-userRoutes.put("/user/:id", updateUser);
+userRoutes.put("/:id", updateUser);
 userRoutes.delete(
 	"/:id",
 	// verifyToken,

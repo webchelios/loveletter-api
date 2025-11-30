@@ -10,7 +10,7 @@ export const getAllMovies = async (req, res) => {
 };
 
 export const createMovie = async (req, res) => {
-	console.log(req.body);
+
 	const movie = new Movies({
 		title: req.body.title,
 		synopsis: req.body.synopsis,

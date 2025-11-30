@@ -16,8 +16,8 @@ moviesroutes.get("/", getAllMovies);
 moviesroutes.post("/", createMovie);
 moviesroutes.get("/search", searchMovies);
 moviesroutes.get("/by-director", getMoviesByDirector);
-moviesroutes.get("/movie/:id", getMovieById);
-moviesroutes.put("/movie/:id", updateMovie);
+moviesroutes.get("/:id", getMovieById);
+moviesroutes.put("/:id", updateMovie);
 moviesroutes.delete(
 	"/:id",
 	// verifyToken,

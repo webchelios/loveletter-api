@@ -103,7 +103,7 @@ const updateUser = async (req, res) => {
 	if (!id) {
 		return res.status(400).json({ message: "El 'id' es requerido" });
 	}
-	const { name, username, image } = req.body;
+	const { name, username, image, role } = req.body;
 
 	try {
 
@@ -115,6 +115,7 @@ const updateUser = async (req, res) => {
 		user.name = name || user.name;
 		user.username = username || user.username;
 		user.image = image || user.image;
+		user.role = role ?? user.role;
 
 		await user.save();
 
@@ -124,7 +125,7 @@ const updateUser = async (req, res) => {
 	}
 };
 
-export const deactivateUser = async () => {
+export const deactivateUser = async (id) => {
 	try {
 		const deactivatedUser = await Users.findByIdAndUpdate(
 			id,

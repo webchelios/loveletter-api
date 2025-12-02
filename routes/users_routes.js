@@ -5,6 +5,7 @@ import {
 	loginUser,
 	updateUser,
 	getUserById,
+	deactivateUser,
 } from "../controllers/users_controller.js";
 import { verifyToken } from "../middlewares/auth.js";
 const userRoutes = express.Router();
@@ -23,8 +24,8 @@ userRoutes.delete(
 	"/:id",
 	verifyToken,
 	(req, res) => {
-		const body = req.body;
-		const result = deactivateUser(req.params.id, body);
+		const id = req.params.id;
+		const result = deactivateUser(id);
 		result
 			.then((user) => {
 				res.status(201).json(user);

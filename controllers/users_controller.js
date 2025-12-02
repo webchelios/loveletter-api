@@ -35,34 +35,38 @@ const registerUser = async (req, res) => {
 
 const loginUser = async (req, res) => {
 	Users.findOne({ email: req.body.email })
-		.then((datos) => {
-			if (datos) {
-				const passwordValido = bcrypt.compareSync(
+		.then((data) => {
+			if (data) {
+				const validPassword = bcrypt.compareSync(
 					req.body.password,
-					datos.password,
+					data.password,
 				);
-				if (!passwordValido)
+				if (!validPassword)
 					return res
 						.status(400)
 						.json({ error: "ok", msj: "Usuario o contraseña incorrecta." });
 				const jwToken = jwt.sign(
 					{
-						usuario: {
-							_id: datos._id,
-							name: datos.name,
-							username: datos.username,
-							email: datos.email,
+						user: {
+							_id: data._id,
+							name: data.name,
+							username: data.username,
+							email: data.email,
+							image: data.image,
+							role: data.role,
 						},
 					},
 					process.env.SEED,
 					{ expiresIn: process.env.EXPIRATION },
 				);
 				res.json({
-					usuario: {
-						_id: datos._id,
-						name: datos.name,
-						username: datos.username,
-						email: datos.email,
+					user: {
+						_id: data._id,
+						name: data.name,
+						username: data.username,
+						email: data.email,
+						image: data.image,
+						role: data.role,
 					},
 					jwToken,
 				});

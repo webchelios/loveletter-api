@@ -25,6 +25,10 @@ const usuarioSchema = new mongoose.Schema({
         type: Boolean,
         required: true,
         default: true,
+    },
+    role: {
+        type: String,
+        required: false,
     }
 });
 

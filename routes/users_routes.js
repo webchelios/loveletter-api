@@ -21,7 +21,7 @@ userRoutes.post("/login", loginUser);
 userRoutes.put("/:id", updateUser);
 userRoutes.delete(
 	"/:id",
-	// verifyToken,
+	verifyToken,
 	(req, res) => {
 		const body = req.body;
 		const result = deactivateUser(req.params.id, body);

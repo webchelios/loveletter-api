@@ -10,12 +10,7 @@ import {
 import { verifyToken } from "../middlewares/auth.js";
 const userRoutes = express.Router();
 
-userRoutes.get(
-	"/",
-	//verifyToken,
-	getUsers,
-);
-
+userRoutes.get("/", getUsers);
 userRoutes.get("/:id", getUserById);
 userRoutes.post("/register", registerUser);
 userRoutes.post("/login", loginUser);
